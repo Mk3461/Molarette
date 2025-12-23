@@ -24,12 +24,11 @@ class ColorRepositoryImpl(
             val apiModel = api.searchColorByHex(cleanedQuery)
             ColorMapper.mapApiToDomain(apiModel)
         } catch (e: Exception) {
-            null // API'den renk bulunamazsa null döner
+            null
         }
     }
 
     override fun getSavedColors(): Flow<List<ColorCard>> {
-        // DAO'dan gelen Entity listesini Flow'da iken Domain modeline dönüştürür.
         return dao.getAllColors().map { entityList ->
             entityList.map { entity ->
                 ColorMapper.mapEntityToDomain(entity)

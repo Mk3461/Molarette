@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// UI durumunu yönetmek için yardımcı data sınıfı
 data class SearchUiState(
     val searchQuery: String = "",
     val searchResult: ColorCard? = null,
@@ -24,18 +23,13 @@ class SearchViewModel(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState
 
-    /**
-     * Arama metnini günceller.
-     */
     fun updateSearchQuery(newQuery: String) {
         _uiState.update {
             it.copy(searchQuery = newQuery, errorMessage = null)
         }
     }
 
-    /**
-     * Hex koduna göre API'de arama yapar.
-     */
+
     fun searchColor() {
         val query = _uiState.value.searchQuery.trim()
 
@@ -50,7 +44,7 @@ class SearchViewModel(
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
             try {
-                // Sadece Hex kodlarını aramak için # işaretini kaldırırız
+
                 val result = repository.searchColorApi(query.removePrefix("#"))
 
                 if (result != null) {
@@ -76,9 +70,6 @@ class SearchViewModel(
         }
     }
 
-    /**
-     * Bulunan rengi kaydeder.
-     */
     fun saveSearchedColor() {
         _uiState.value.searchResult?.let { color ->
             viewModelScope.launch {

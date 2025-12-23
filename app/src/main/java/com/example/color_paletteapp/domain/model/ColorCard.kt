@@ -7,5 +7,5 @@ data class ColorCard(
     val hexCode: String,
     val name: String,
     val isSaved: Boolean = false,
-    val composeColor: Color // Compose UI'da kullanılmak üzere dönüştürülmüş renk
+    val composeColor: Color
 )

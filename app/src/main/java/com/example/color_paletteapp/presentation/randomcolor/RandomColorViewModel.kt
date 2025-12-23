@@ -9,25 +9,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RandomColorViewModel(
-    private val repository: ColorRepository // Repository enjeksiyon ile gelir
+    private val repository: ColorRepository
 ) : ViewModel() {
 
-    // UI Durumu: Rastgele üretilen renk kartı (Nullable olabilir)
     private val _randomColor = MutableStateFlow<ColorCard?>(null)
     val randomColor: StateFlow<ColorCard?> = _randomColor
 
-    // UI Durumu: Yükleniyor bilgisi
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
-        // ViewModel başlatıldığında hemen bir renk çek
         generateNewRandomColor()
     }
 
-    /**
-     * API'den rastgele bir renk çeker ve durumu günceller.
-     */
     fun generateNewRandomColor() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -35,25 +30,21 @@ class RandomColorViewModel(
                 val newColor = repository.fetchRandomColor()
                 _randomColor.value = newColor
             } catch (e: Exception) {
-                // Hata yönetimi (loglama, kullanıcıya mesaj gösterme vb.)
+
                 println("Rastgele renk çekme hatası: ${e.message}")
-                _randomColor.value = null // Hata durumunda rengi sıfırla
+                _randomColor.value = null
             } finally {
                 _isLoading.value = false
             }
         }
     }
 
-    /**
-     * Şu anda ekranda gösterilen rengi veritabanına kaydeder.
-     */
     fun saveCurrentColor() {
         _randomColor.value?.let { color ->
             viewModelScope.launch {
-                // Rengi kaydederken isSaved bayrağını true yaparak kaydederiz.
                 repository.saveColor(color.copy(isSaved = true))
 
-                // UI'daki durumu anında güncelle
+
                 _randomColor.value = color.copy(isSaved = true)
             }
         }

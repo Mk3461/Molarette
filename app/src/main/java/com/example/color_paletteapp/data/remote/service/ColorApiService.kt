@@ -7,11 +7,11 @@ import retrofit2.http.Query
 
 interface ColorApiService {
 
-    // Rastgele renk çeker. (Base URL: http://www.thecolorapi.com/id?)
+
     @GET("random")
     suspend fun getRandomColor(): ColorApiModel
 
-    // Hex koduna göre renk arar. (Örn: /id?hex=FF5733)
+
     @GET("id")
     suspend fun searchColorByHex(
         @Query("hex") hexCode: String

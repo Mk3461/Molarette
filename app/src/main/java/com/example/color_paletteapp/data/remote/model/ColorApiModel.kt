@@ -2,7 +2,7 @@ package com.example.color_paletteapp.data.remote.model
 
 import com.squareup.moshi.Json
 
-// API'den gelen ana renk objesi
+
 data class ColorApiModel(
     @field:Json(name = "hex")
     val hex: ColorHex,

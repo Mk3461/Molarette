@@ -14,17 +14,13 @@ class ColorListViewModel(
     private val repository: ColorRepository
 ) : ViewModel() {
 
-    // 1. Kaydedilen renkleri çeker ve StateFlow olarak sunar.
     val savedColors: StateFlow<List<ColorCard>> = repository.getSavedColors()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000), // Uygulama aktifken veriyi dinler
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
 
-    /**
-     * Listedeki bir rengi veritabanından siler.
-     */
     fun deleteColor(colorId: Int) {
         viewModelScope.launch {
             repository.deleteColor(colorId)
